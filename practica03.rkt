@@ -92,3 +92,12 @@
 (check-equal? (suma-impares-pares '(3 1 5)) (cons 9 0))
 (check-equal? (suma-impares-pares '(-3 6 5 9 -1 -15 -2 -4)) (cons -5 0))
 (check-equal? (suma-impares-pares '()) (cons 0 0))
+
+                          ;;;;Ejercicio 3;;;;
+;;Definición de las funciones
+  
+
+;;Ejemplos del enunciado
+(display "\n\n Ejercicio 3 \n")
+
+;;Pruebas
