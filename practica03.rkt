@@ -95,9 +95,22 @@
 
                           ;;;;Ejercicio 3;;;;
 ;;Definición de las funciones
-  
+(define (multiplo? x y)
+  (if (equal? (mod y x) 0)
+      #t
+      #f))
+(define (multiplo-de n lista-nums)
+  (if (null? lista-nums)
+      '()
+      (cons (multiplo? n (car lista-nums)) (multiplo-de n (cdr lista-nums)))))
 
 ;;Ejemplos del enunciado
 (display "\n\n Ejercicio 3 \n")
+(display "¿Los números de la lista (100 23 10 300 48 7) son múltiplos de 10?")
+(display (multiplo-de 10 '(100 23 10 300 48 7)))
 
 ;;Pruebas
+(check-equal? (multiplo-de 10 '(100 23 10 300 48 7)) '(#t #f #t #t #f #f))
+(check-equal? (multiplo-de 2 '(4 11 21 6)) '(#t #f #f #t))
+(check-equal? (multiplo-de -1 '()) '())
+(check-equal? (multiplo-de 117 '(7605 20 234 351)) '(#t #f #t #t))
