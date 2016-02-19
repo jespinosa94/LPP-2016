@@ -114,3 +114,76 @@
 (check-equal? (multiplo-de 2 '(4 11 21 6)) '(#t #f #f #t))
 (check-equal? (multiplo-de -1 '()) '())
 (check-equal? (multiplo-de 117 '(7605 20 234 351)) '(#t #f #t #t))
+
+                          ;;;;Ejercicio 4a;;;;
+;;Definición de las funciones
+(define (filtra-simbolos lista-simbolos lista-num)
+  (if (null? lista-simbolos)
+      '()
+      (if (equal? (string-length (symbol->string (car lista-simbolos)))
+              (car lista-num))
+          (cons (cons (car lista-simbolos) (car lista-num))
+                (filtra-simbolos (cdr lista-simbolos) (cdr lista-num)))
+          (filtra-simbolos (cdr lista-simbolos) (cdr lista-num)))))
+
+;;Ejemplos del enunciado
+(display "\n\n Ejercicio 4a \n")
+(display "La filtración de cadenas de (este es un ejercicio de examen)
+ y (2 1 2 9 1 6) es: ")
+(display (filtra-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6)))
+
+;;Pruebas
+(check-equal? (filtra-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6))
+              (list (cons 'un 2) (cons 'ejercicio 9) (cons 'examen 6)))
+(check-equal? (filtra-simbolos '(no era muy dificil de sacar) '(2 3 3 7 2 5))
+              (list (cons 'no 2) (cons 'era 3) (cons 'muy 3) (cons 'dificil 7)
+                    (cons 'de 2) (cons 'sacar 5)))
+(check-equal? (filtra-simbolos '(este tiene que salir vacio) '( 1 1 1 1 1))
+              '())
+
+                          ;;;;Ejercicio 4b;;;;
+;;Definición de las funciones
+(define (expande-pareja pair)
+  (if (> (cdr pair) 0)
+      (cons (car pair) (expande-pareja (cons (car pair) (- (cdr pair) 1))))
+      '()))
+  
+(define (expande lista-parejas)
+  (if (null? lista-parejas)
+      '()
+      (append (expande-pareja (car lista-parejas)) (expande (cdr lista-parejas)))))
+  
+
+;;Ejemplos del enunciado
+(display "\n\n Ejercicio 4b \n")
+(display "La lista expandida de {(#t . 3), (LPP . 2) (b . 4)} es: ")
+(display (expande (list (cons #t 3) (cons "LPP" 2) (cons 'b 4))))
+;;Pruebas
+(check-equal? (expande (list (cons #t 3) (cons "LPP" 2) (cons 'b 4)))
+              (list #t #t #t "LPP" "LPP" 'b 'b 'b 'b))
+(check-equal? (expande '()) '())
+(check-equal? (expande (list (cons 'p 0) (cons "hola" 3)(cons 'j -1)))
+              (list "hola" "hola" "hola"))
+
+                          ;;;;Ejercicio 5;;;;
+;;Definición de las funciones
+(define (suma-parejas-impar-par lista-parejas)
+  (if (null? lista-parejas)
+      (cons 0 0)
+      (if (odd? (caar lista-parejas))
+          (suma-izq (caar lista-parejas) (suma-parejas-impar-par (cdr lista-parejas)))
+          (suma-parejas-impar-par (cdr lista-parejas)))
+      (if (even? (cdar lista-parejas))
+          (suma-der (cdar lista-parejas) (suma-parejas-impar-par (cdr lista-parejas)))
+          (suma-parejas-impar-par (cdr lista-parejas)))))
+      
+        
+
+;;Ejemplos del enunciado
+(display "\n\n Ejercicio 5 \n")
+(display "la suma de los numeros impares y pares de la lista {(3 . 2), (6 . 5), (7 . 4)} es: ")
+(display (suma-parejas-impar-par '((3 . 2) (6 . 5) (7 . 4))))
+
+;;Pruebas
+(check-equal? (suma-parejas-impar-par '((3 . 2) (6 . 5) (7 . 4))) (cons 10 6))
+(check-equal? (suma-parejas-impar-par '((1 . 5) (4 . 9) (8 . 3))) (cons 1 0))
