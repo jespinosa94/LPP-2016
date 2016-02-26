@@ -161,9 +161,13 @@
                           ;-----------------;
 ;;Definición de las funciones
 (define (filtra-simbolos lista-simbolos lista-num)
-  (map (lambda (x y)
-         ((= (string-length (symbol->string x)) y))
-         (cons x y))))
+  (filter (lambda (x)
+            (not (null? x)))
+          (map (lambda (x y)
+         (if (= (string-length  (symbol->string x)) y)
+             (cons x y)
+             '()))
+       lista-simbolos lista-num)))
 
 ;;Ejemplos del enunciado
 (display "\n\n               ________________Ejercicio 4________________ \n")
@@ -178,3 +182,36 @@
                     (cons 'de 2) (cons 'sacar 5)))
 (check-equal? (filtra-simbolos '(este tiene que salir vacio) '( 1 1 1 1 1))
               '())
+
+                          ;-----------------;
+                          ;;;;Ejercicio 5a;;;;
+                          ;-----------------;
+;;Definición de las funciones
+(define (generar-cartas n palo)
+  (if (= 0 n)
+      '()
+      (append (generar-cartas (- n 1) palo) (list(cons n palo)))))
+     
+      
+
+;;Ejemplos del enunciado
+(display "\n\n               ________________Ejercicio 5a________________ \n")
+(display "Las cartas del palo de oros son: ")
+(display (generar-cartas 12 'oros))
+
+;;Pruebas
+(check-equal? (generar-cartas 12 'oros) (list (cons 1 'oros) (cons 2 'oros) (cons 3 'oros) (cons 4 'oros) (cons 5 'oros) (cons 6 'oros) (cons 7 'oros) (cons 8 'oros) (cons 9 'oros) (cons 10 'oros) (cons 11 'oros) (cons 12 'oros)))
+
+                          ;-----------------;
+                          ;;;;Ejercicio 5b;;;;
+                          ;-----------------;
+;;Definición de las funciones
+(define (construye-baraja n lista-palos)
+  (map (lambda (y)
+         (generar-cartas n y)) lista-palos))
+
+;;Ejemplos del enunciado
+(display "\n\n               ________________Ejercicio 5b________________ \n")
+(display "Al generar la baraja española se muestra: ")
+(display (construye-baraja 12 '(oros copas espadas bastos)))
+;;Pruebas
