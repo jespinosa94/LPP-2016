@@ -74,6 +74,7 @@
 ;;Pruebas
 (check-equal? (aplica-funciones (list (cons even? 6) (cons null? '(4)) (cons list 8) (cons car '(1 2 3)))) '(#t #f (8) 1))
 (check-equal? (aplica-funciones (list (cons null? '()) (cons cdr '(1 4)))) '(#t (4)))
+(check-equal? (aplica-funciones (list (cons even? 1))) '(#f)) 
 
                           ;-----------------;
                           ;;;;Ejercicio 2b;;;;
@@ -89,8 +90,9 @@
 (display " El resultado de aplicar (even? 6) (null? '(4) (list 8) y (car'(1 2 3) es: ")
 (display (aplica-funciones-FOS (list (cons even? 6) (cons null? '(4)) (cons list 8) (cons car '(1 2 3)))))
 ;;Pruebas
-(check-equal? (aplica-funciones (list (cons even? 6) (cons null? '(4)) (cons list 8) (cons car '(1 2 3)))) '(#t #f (8) 1))
-(check-equal? (aplica-funciones (list (cons null? '()) (cons cdr '(1 4)))) '(#t (4)))
+(check-equal? (aplica-funciones-FOS (list (cons even? 6) (cons null? '(4)) (cons list 8) (cons car '(1 2 3)))) '(#t #f (8) 1))
+(check-equal? (aplica-funciones-FOS (list (cons null? '()) (cons cdr '(1 4)))) '(#t (4)))
+(check-equal? (aplica-funciones-FOS (list (cons even? 1))) '(#f)) 
 
                           ;-----------------;
                           ;;;;Ejercicio 3a;;;;
@@ -201,7 +203,9 @@
 
 ;;Pruebas
 (check-equal? (generar-cartas 12 'oros) (list (cons 1 'oros) (cons 2 'oros) (cons 3 'oros) (cons 4 'oros) (cons 5 'oros) (cons 6 'oros) (cons 7 'oros) (cons 8 'oros) (cons 9 'oros) (cons 10 'oros) (cons 11 'oros) (cons 12 'oros)))
-
+(check-equal? (generar-cartas 3 'bastos) (list (cons 1 'bastos) (cons 2 'bastos) (cons 3 'bastos)))
+(check-equal? (generar-cartas 6 'media) (list (cons 1 'media) (cons 2 'media) (cons 3 'media) (cons 4 'media) (cons 5 'media) (cons 6 'media)))
+                                               
                           ;-----------------;
                           ;;;;Ejercicio 5b;;;;
                           ;-----------------;
