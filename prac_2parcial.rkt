@@ -1,6 +1,7 @@
 #lang r6rs
 (import (rnrs)
-        (schemeunit))
+        (schemeunit)
+        (mutable-pairs))
 ;;Práctica 5 ejercicio 4a
 (define (suma-iter lista)
   (suma-iter-aux lista 0))
@@ -41,3 +42,22 @@
 
 (display "\nEjercicio 5: ")
 (display (asteriscos-iter 5))
+
+
+
+;;;;;;;;;;;;;;;;arboles;;;;;;;;;;;;;;;
+(define (make-tree dato lista-arboles)  
+   (cons dato lista-arboles))
+
+(define (make-hoja-tree dato) 
+    (make-tree dato '()))
+(define (dato-tree arbol) 
+    (car arbol))
+
+(define (hijos-tree arbol) 
+    (cdr arbol))
+
+(define (hoja-tree? arbol) 
+   (null? (hijos-tree arbol)))
+(define (cuadrado n)
+  (* n n))
