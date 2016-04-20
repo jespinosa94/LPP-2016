@@ -1,7 +1,7 @@
 #lang r6rs
 (import (rnrs)
         (schemeunit)
-        (mutable-pairs))
+        (rnrs mutable-pairs))
 ;;Práctica 5 ejercicio 4a
 (define (suma-iter lista)
   (suma-iter-aux lista 0))
