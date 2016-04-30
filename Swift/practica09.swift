@@ -42,8 +42,17 @@ print("La intersección de \(intervalo1) y \(intervalo4) es \(interseccion(inter
 /////////////////
 ///Ejercicio 3///
 /////////////////
-func buscaValores(claves: [Int], mapa: [Int, String]) -> [String] {
-  return ["holiii"]
+func buscaValores(claves: [Int], _ mapa: [Int: String]) -> [String] {
+  var resultado = [String]()
+  for clave in claves {
+    let auxiliar: String! = mapa[clave]
+    resultado.append(auxiliar)
+  }
+  return resultado
 }
 
 buscaValores([1,2,2,1,3], [1: "patatas", 2: "huevos", 3: "leche"])
+
+/////////////////
+///Ejercicio 4///
+/////////////////
