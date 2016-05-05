@@ -141,7 +141,7 @@ print(" La intersección de los intervalos 1 y 2 es: \(interseccion(intervalo1, 
 print(" La intersección de los intervalos 1 y 3 es: \(interseccion(intervalo1, intervalo3))")
 
 /////////////////////
-/////Ejercicio 4/////
+/////Ejercicio 5/////
 /////////////////////
 indirect enum BinaryTree {
   case Node (Int, BinaryTree, BinaryTree)
