@@ -155,15 +155,14 @@ print(" [FOS] Prueba de la funcion en el ejemplo dado en el examen con el arbol 
 /////////////////////
 /////Ejercicio 5/////
 /////////////////////
-
 indirect enum ArbolG<A> {
-  case Nodo(A, [ArbolG<A>])
+  case Node(A, [ArbolG<A>])
   case Hoja(A)
 }
 
 func datoArbolG<A>(arbol: ArbolG<A>) -> A {
   switch arbol {
-    case let .Nodo(dato, _):
+    case let .Node(dato, _):
       return dato
     case let .Hoja(dato):
       return dato
@@ -172,7 +171,7 @@ func datoArbolG<A>(arbol: ArbolG<A>) -> A {
 
 func hijosArbolG<A>(arbol: ArbolG<A>) -> [ArbolG<A>] {
   switch arbol {
-    case let .Nodo(_, hijos):
+    case let .Node(_, hijos):
       return hijos
     case .Hoja:
       return []
@@ -181,28 +180,32 @@ func hijosArbolG<A>(arbol: ArbolG<A>) -> [ArbolG<A>] {
 
 func esHojaArbolG<A>(arbol: ArbolG<A>) -> Bool {
   switch arbol {
-    case .Nodo:
+    case .Node:
       return false
     case .Hoja:
       return true
   }
 }
 
-func sumaArbolG<A>(arbol: ArbolG<A>) -> A {
-  return datoArbolG(arbol) + sumaBosqueG(hijosArbolG(arbol))
+func sumaArbolG<A>(arbol: ArbolG<A>, suma: (A, A) -> A, neutro: A) -> A {
+  print(hijosArbolG(arbol))
+  let hijos = hijosArbolG(arbol)
+  return suma(datoArbolG(arbol), sumaBosqueG(hijos, suma, neutro))
 }
 
-func sumaBosqueG<A>(bosque: [ArbolG<A>]) -> A {
-  if bosque.isEmpty {
-    return 0
+func sumaBosqueG<B>(bosque: [ArbolG<B>], _ suma: (B, [B]) -> B, _ neutro: B) -> B {
+  return neutro;
+  /*if bosque.isEmpty {
+    return neutro
   } else {
     let primero = bosque[0]
     let resto = Array(bosque[1..<bosque.endIndex])
-    return sumaArbolG(primero) + sumaBosqueG(resto)
-  }
+    return suma(sumaArbolG(primero, suma: suma, neutro: neutro), sumaBosqueG(resto, suma, neutro))
+  }*/
 }
 
 print("Ejercicio 5:")
 let arbolInt: ArbolG<Int> = .Node(8, [.Hoja(2), .Hoja(12)])
-let sumaInt = sumaArbolG(arbolInt, suma: ..., neutro: ...)
-print("La suma del arbol \(arbolInt) es \(sumaInt)")
+print(sumaArbolG(arbolInt, suma: +, neutro: 0))
+/*let sumaInt = sumaArbolG(arbolInt, suma: +, neutro: 0)
+print("La suma del arbol \(arbolInt) es \(sumaInt)")*/
