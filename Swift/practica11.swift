@@ -62,10 +62,51 @@ func sumaBosque(bosque: [Arbol]) -> Int {
 }
 
 func sumaArbolFOS(arbol: Arbol) -> Int {
-  let bosque = Array(hijosTree(arbol)[1..<hijosTree(arbol).endIndex])
-  return datoTree(arbol) + bosque.reduce(0, combine: bosque.map {datoTree($0) + sumaArbolFOS()})
+  return datoTree(arbol) + hijosTree(arbol).map({(rama: Arbol) -> Int in
+                                                return (sumaArbolFOS(rama))}).reduce(0, combine: +)
 }
 
-print(" Ejercicio 2")
+print("Ejercicio 2:")
 let arbol2: Arbol = .Nodo(10, [.Hoja(2), .Nodo(12, [.Hoja(4), .Hoja(2)]), .Nodo(10, [.Hoja(5)])])
 print(" La suma recursiva de los elementos del arbol propuesto es: \(sumaArbol(arbol2))")
+print(" La suma con FOS de los elementos del arbol propuesto es: \(sumaArbolFOS(arbol2))")
+
+/////////////////////
+/////Ejercicio 3/////
+/////////////////////
+func vecesArbol(arbol: Arbol, dato: Int) -> Int {
+  if datoTree(arbol) == dato {
+    return 1 + vecesBosque(hijosTree(arbol), dato)
+  } else {
+    return vecesBosque(hijosTree(arbol), dato)
+  }
+}
+
+func vecesBosque(bosque: [Arbol], _ dato: Int) -> Int {
+  if bosque.isEmpty {
+    return 0
+  } else {
+    let primero = bosque[0]
+    let resto = Array(bosque[1..<bosque.endIndex])
+    return vecesArbol(primero, dato: dato) + vecesBosque(resto, dato)
+  }
+}
+
+func compruebaRaiz(arbol: Arbol, dato: Int) -> Int {
+  if datoTree(arbol)==dato {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+func vecesArbolFOS(arbol: Arbol, dato: Int) -> Int {
+  return compruebaRaiz(arbol, dato: dato) + hijosTree(arbol).map({(rama: Arbol) -> Int in
+                                                                  return vecesArbolFOS(rama, dato: dato)}).reduce(0, combine: +)
+}
+
+
+
+print("Ejercicio 3:")
+print(" Búsqueda del número de veces del número 2 en el arbol dado en la práctica (forma recursiva): \(vecesArbol(arbol2, dato: 2))")
+print(" Búsqueda del numero 12 en el arbol propuesto (funciones de orden superior): \(vecesArbolFOS(arbol2, dato: 12))")
