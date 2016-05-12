@@ -17,7 +17,6 @@ func datoTree(arbol: Arbol) -> Int {
   }
 }
 
-//Cuando se hace hijosTree de una hoja hay que devolver un valor nulo?
 func hijosTree(arbol: Arbol) -> [Arbol] {
   switch arbol {
     case let .Nodo(_, hijos):
@@ -37,11 +36,11 @@ func esHojatree(arbol: Arbol) -> Bool {
 }
 
 print("Ejercicio 1: ")
-print(" Creando el árbol binario [2, 3, 4, 5] mostrado en Inorden...")
+print(" Creando el arbol binario [2, 3, 4, 5] mostrado en Inorden...")
 let arbol1: Arbol = .Nodo(4, [.Nodo(3, [.Hoja(2)]), .Hoja(5)])
-print(" Mostrando la raíz del árbol: \(datoTree(arbol1))")
-print(" Mostrando el dato del hijo izquierda de la raíz (dato 3): \(datoTree(hijosTree(arbol1)[0]))")
-print(" Mostrando el dato del hijo izquierdo de la raíz (la hoja 5): \(datoTree(hijosTree(arbol1)[1]))")
+print(" Mostrando la raiz del arbol: \(datoTree(arbol1))")
+print(" Mostrando el dato del hijo izquierda de la raiz (dato 3): \(datoTree(hijosTree(arbol1)[0]))")
+print(" Mostrando el dato del hijo izquierdo de la raiz (la hoja 5): \(datoTree(hijosTree(arbol1)[1]))")
 print(" Mostrando el arbol izquierdo de la raiz ([3, 2]): \(hijosTree(arbol1)[0])")
 
 /////////////////////
@@ -69,7 +68,7 @@ func sumaArbolFOS(arbol: Arbol) -> Int {
 print("Ejercicio 2:")
 let arbol2: Arbol = .Nodo(10, [.Hoja(2), .Nodo(12, [.Hoja(4), .Hoja(2)]), .Nodo(10, [.Hoja(5)])])
 print(" La suma recursiva de los elementos del arbol propuesto es: \(sumaArbol(arbol2))")
-print(" La suma con FOS de los elementos del arbol propuesto es: \(sumaArbolFOS(arbol2))")
+print(" [FOS] La suma de los elementos del arbol propuesto es: \(sumaArbolFOS(arbol2))")
 
 /////////////////////
 /////Ejercicio 3/////
@@ -108,8 +107,8 @@ func vecesArbolFOS(arbol: Arbol, dato: Int) -> Int {
 
 
 print("Ejercicio 3:")
-print(" Búsqueda del número de veces del número 2 en el arbol dado en la práctica (forma recursiva): \(vecesArbol(arbol2, dato: 2))")
-print(" Búsqueda del numero 12 en el arbol propuesto (funciones de orden superior): \(vecesArbolFOS(arbol2, dato: 12))")
+print(" Busqueda del numero de veces del numero 2 en el arbol dado en la practica: \(vecesArbol(arbol2, dato: 2))")
+print(" [FOS] Busqueda del numero 12 en el arbol propuesto: \(vecesArbolFOS(arbol2, dato: 12))")
 
 /////////////////////
 /////Ejercicio 4/////
@@ -119,10 +118,91 @@ func sumaHijosArbol(arbol: Arbol) -> Bool {
   if esHojatree(arbol) {
     return true;
   } else {
-    return (datoTree(arbol) = sumaHijosRaiz())
+    return (datoTree(arbol)==hijosTree(arbol).map({datoTree($0)}).reduce(0, combine: +)
+            && sumaHijosBosque(hijosTree(arbol)))
   }
 }
 
-func sumaHijosRaiz(hijos: [Arbol]) -> Int {
-  return hijos.reduce(0, combine: +)
+func sumaHijosBosque(bosque: [Arbol]) -> Bool {
+  if bosque.isEmpty {
+    return true
+  } else {
+    let primero = bosque[0]
+    let resto = Array(bosque[1..<bosque.endIndex])
+    return sumaHijosArbol(primero) && sumaHijosBosque(resto)
+  }
 }
+
+func sumaHijosArbolFOS(arbol: Arbol) -> Bool {
+  if esHojatree(arbol) {
+    return true
+  } else {
+    return (datoTree(arbol)==hijosTree(arbol).map({datoTree($0)}).reduce(0, combine: +)
+            && (hijosTree(arbol).map({(rama: Arbol) -> Bool in
+                                      sumaHijosArbolFOS(rama)}).reduce(true,
+                                      combine: {(x: Bool, y: Bool) -> Bool in
+                                                return x && y})))
+  }
+}
+
+let arbolExamen: Arbol = .Nodo(35, [.Hoja(5), .Nodo(20, [.Hoja(13), .Hoja(7)]), .Nodo(10, [.Hoja(10)])])
+print("Ejercicio 4:")
+print(" El resultado de ejecutar sumaHijosArbol en el arbol dado en el enunciado es: \(sumaHijosArbol(arbol2))")
+print(" Prueba de la funcion en el ejemplo dado en el examen con el arbol (35(5)(20(13)(7))(10(10))): \(sumaHijosArbol(arbolExamen))")
+print(" [FOS] El resultado de ejecutar sumaHijosArbol en el arbol dado en el enunciado es: \(sumaHijosArbolFOS(arbol2))")
+print(" [FOS] Prueba de la funcion en el ejemplo dado en el examen con el arbol (35(5)(20(13)(7))(10(10))): \(sumaHijosArbol(arbolExamen))")
+
+/////////////////////
+/////Ejercicio 5/////
+/////////////////////
+
+indirect enum ArbolG<A> {
+  case Nodo(A, [ArbolG<A>])
+  case Hoja(A)
+}
+
+func datoArbolG<A>(arbol: ArbolG<A>) -> A {
+  switch arbol {
+    case let .Nodo(dato, _):
+      return dato
+    case let .Hoja(dato):
+      return dato
+  }
+}
+
+func hijosArbolG<A>(arbol: ArbolG<A>) -> [ArbolG<A>] {
+  switch arbol {
+    case let .Nodo(_, hijos):
+      return hijos
+    case .Hoja:
+      return []
+  }
+}
+
+func esHojaArbolG<A>(arbol: ArbolG<A>) -> Bool {
+  switch arbol {
+    case .Nodo:
+      return false
+    case .Hoja:
+      return true
+  }
+}
+
+func sumaArbolG<A>(arbol: ArbolG<A>) -> A {
+  return datoArbolG(arbol) + sumaBosqueG(hijosArbolG(arbol))
+}
+
+func sumaBosqueG<A>(bosque: [ArbolG<A>]) -> A {
+  if bosque.isEmpty {
+    return 0
+  } else {
+    let primero = bosque[0]
+    let resto = Array(bosque[1..<bosque.endIndex])
+    return sumaArbolG(primero) + sumaBosqueG(resto)
+  }
+}
+
+print("Ejercicio 5:")
+let arbolInt: ArbolG<Int> = .Node(8, [.Hoja(2), .Hoja(12)])
+let sumaInt = sumaArbolG(arbolInt, suma: ..., neutro: ...)
+print("La suma del arbol \(arbolInt) es \(sumaInt)")
