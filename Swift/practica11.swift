@@ -110,3 +110,19 @@ func vecesArbolFOS(arbol: Arbol, dato: Int) -> Int {
 print("Ejercicio 3:")
 print(" Búsqueda del número de veces del número 2 en el arbol dado en la práctica (forma recursiva): \(vecesArbol(arbol2, dato: 2))")
 print(" Búsqueda del numero 12 en el arbol propuesto (funciones de orden superior): \(vecesArbolFOS(arbol2, dato: 12))")
+
+/////////////////////
+/////Ejercicio 4/////
+/////////////////////
+
+func sumaHijosArbol(arbol: Arbol) -> Bool {
+  if esHojatree(arbol) {
+    return true;
+  } else {
+    return (datoTree(arbol) = sumaHijosRaiz())
+  }
+}
+
+func sumaHijosRaiz(hijos: [Arbol]) -> Int {
+  return hijos.reduce(0, combine: +)
+}
