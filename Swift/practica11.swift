@@ -188,24 +188,29 @@ func esHojaArbolG<A>(arbol: ArbolG<A>) -> Bool {
 }
 
 func sumaArbolG<A>(arbol: ArbolG<A>, suma: (A, A) -> A, neutro: A) -> A {
-  print(hijosArbolG(arbol))
   let hijos = hijosArbolG(arbol)
   return suma(datoArbolG(arbol), sumaBosqueG(hijos, suma, neutro))
 }
 
-func sumaBosqueG<B>(bosque: [ArbolG<B>], _ suma: (B, [B]) -> B, _ neutro: B) -> B {
-  return neutro;
-  /*if bosque.isEmpty {
+func sumaBosqueG<A>(bosque: [ArbolG<A>], _ suma: (A, A) -> A, _ neutro: A) -> A {
+  if bosque.isEmpty {
     return neutro
   } else {
     let primero = bosque[0]
     let resto = Array(bosque[1..<bosque.endIndex])
     return suma(sumaArbolG(primero, suma: suma, neutro: neutro), sumaBosqueG(resto, suma, neutro))
-  }*/
+  }
 }
 
 print("Ejercicio 5:")
 let arbolInt: ArbolG<Int> = .Node(8, [.Hoja(2), .Hoja(12)])
-print(sumaArbolG(arbolInt, suma: +, neutro: 0))
-/*let sumaInt = sumaArbolG(arbolInt, suma: +, neutro: 0)
-print("La suma del arbol \(arbolInt) es \(sumaInt)")*/
+sumaArbolG(arbolInt, suma: +, neutro: 0)
+let sumaInt = sumaArbolG(arbolInt, suma: +, neutro: 0)
+print(" La suma del arbol \(arbolInt) es \(sumaInt)")
+let t1 = (8, 10)
+let t2 = (2, 7)
+let t3 = (6, 4)
+let arbolTuplas: ArbolG<(Int, Int)> = .Node(t1, [.Hoja(t2), .Hoja(t3)])
+
+let sumaTuplas = sumaArbolG(arbolTuplas, suma: {(($0.0 + $1.0), ($0.1 + $1.1))} , neutro: (0, 0))
+print(" La suma del arbol \(arbolTuplas) es \(sumaTuplas)")
