@@ -134,19 +134,32 @@ class Carrera {
   }
 
   func clasificacion() {
+    cochesEnCarrera.sortInPlace({ (a: Coche, b: Coche) -> Bool in
+                          return a.distanciaRecorrida>b.distanciaRecorrida})
     for (index, coche) in cochesEnCarrera.enumerate() {
       print("\(index + 1). \(coche.descripcion) (\(coche.distanciaRecorrida) kilometros recorridos)")
     }
   }
 }
 print("Ejercicio 1")
-let carrera = Carrera(numCoches: 2, horas: 3)
+let carrera = Carrera(numCoches: 5, horas: 3)
 print("\nDescripción de la carrera: ")
 carrera.descripcion()
 print("\n!!! Comienza la carrera !!!")
 carrera.empezar()
 print("\n !!! Clasificacion !!!")
 carrera.clasificacion()
+
+///Ejercicio 3 [declaración del protocolo]///
+/////////////////
+
+//Para el círculo supongo que el tamaño será igual a ancho=diámetro y alto=radio
+protocol Figura {
+  var centro: Punto {get set}
+  var area: Double { get }
+  var tamaño: Tamaño { get }
+}
+
 //////////////////
 ///Ejercicio 2///
 /////////////////
@@ -155,11 +168,21 @@ struct Punto {
   var x = 0.0, y = 0.0
 }
 
+/*func = (punto: Punto) -> Punto {
+  self.x = x
+  self.y = y
+  return self
+}*/
+
+
 struct Tamaño {
   var ancho = 0.0, alto = 0.0
 }
+/*func = (tam: Tamaño) -> Tamaño {
+  return Tamaño(ancho: tam.ancho, alto: tam.alto)
+}*/
 
-class Rectangulo {
+class Rectangulo: Figura {
   var origen = Punto()   //Esquina inferior izq del rectángulo
   var tamaño = Tamaño()  //Dimensiones del rectángulo
   var centro: Punto {
@@ -182,6 +205,7 @@ class Rectangulo {
     self.origen = origen
     self.tamaño = tamaño
   }
+
 }
 
 print("\n\nEjercicio 2")
@@ -193,15 +217,17 @@ print("   Cambio del centro del rectángulo a la posición (0,0)")
 rectanguloPrueba.centro = Punto(x: 0, y: 0)
 print("   El origen del rectángulo es \(rectanguloPrueba.origen), el tamaño del rectángulo es \(rectanguloPrueba.tamaño), el centro es \(rectanguloPrueba.centro) y el área es \(rectanguloPrueba.area)")
 
-class Circulo {
+class Circulo: Figura {
   var centro = Punto()
   var radio = 0.0
+  var tamaño = Tamaño()
   var area: Double {
     get {
       return π * pow(radio, 2)
     }
     set(nuevaArea) {
       radio = sqrt(nuevaArea/π)
+      tamaño = Tamaño(ancho: radio * 2, alto: radio)  //suponiendo el ancho el diametro y el alto el radio
     }
   }
 
@@ -217,8 +243,9 @@ print("   El área del círculo es \(circulito.area)")
 circulito.area = 40
 print("   Cambio del área del círculo a 40m: el nuevo radio es \(circulito.radio) con centro en \(circulito.centro)")
 
-class Triangulo {
+class Triangulo: Figura {
   var p1: Punto, p2: Punto, p3: Punto = Punto()
+  var tamaño = Tamaño()
   var centro: Punto {
     get {
       //Ecuación del nuevo punto x=(Ax + Bx + Cx)/3 = resultado/3 x=(Ay + By + Cy)/3 = resultado/3
@@ -234,6 +261,7 @@ class Triangulo {
       p1 = Punto(x: nuevoCentro.x-distCentro1.x, y: nuevoCentro.y-distCentro1.y)
       p2 = Punto(x: p1.x+dist12.x, y: p1.y+dist12.y)
       p3 = Punto(x: p1.x+dist13.x, y: p1.y+dist13.y)
+      tamaño = Tamaño(ancho: max(p1.x, p2.x, p3.x), alto: min(p1.y, p2.y, p3.y))
     }
   }
   var area: Double {
@@ -257,12 +285,3 @@ triangulo.centro = Punto(x: 2, y: 2)
 print("   Las nuevas posiciones del triángulo son [\(triangulo.p1), \(triangulo.p2), \(triangulo.p3)] y el area = \(triangulo.area)")
 triangulo.centro = Punto(x: 6, y:7)
 print("   Volvemos a cambiar la posición del centro al punto (6,7) y el resultado es [\(triangulo.p1), \(triangulo.p2), \(triangulo.p3)] y el area = \(triangulo.area)")
-//////////////////
-///Ejercicio 3///
-/////////////////
-
-protocol Figura {
-  var centro: Punto {get set}
-  var area: Double { get }
-  var tamaño: Tamaño { get }
-}
