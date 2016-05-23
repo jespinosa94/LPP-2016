@@ -166,13 +166,13 @@ protocol Figura {
 
 struct Punto {
   var x = 0.0, y = 0.0
-}
+  func = (punto: Punto) -> Punto {
 
-/*func = (punto: Punto) -> Punto {
-  self.x = x
-  self.y = y
-  return self
-}*/
+    self.x = x
+    self.y = y
+    return self
+  }
+}
 
 
 struct Tamaño {
