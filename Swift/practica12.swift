@@ -142,7 +142,7 @@ class Carrera {
   }
 }
 print("Ejercicio 1")
-let carrera = Carrera(numCoches: 5, horas: 3)
+let carrera = Carrera(numCoches: 2, horas: 3)
 print("\nDescripción de la carrera: ")
 carrera.descripcion()
 print("\n!!! Comienza la carrera !!!")
@@ -150,8 +150,9 @@ carrera.empezar()
 print("\n !!! Clasificacion !!!")
 carrera.clasificacion()
 
-///Ejercicio 3 [declaración del protocolo]///
-/////////////////
+//////////////////////////////////////////
+///Ejercicio 3 (redefinición de tipos)///
+////////////////////////////////////////
 
 //Para el círculo supongo que el tamaño será igual a ancho=diámetro y alto=radio
 protocol Figura {
@@ -166,25 +167,28 @@ protocol Figura {
 
 struct Punto {
   var x = 0.0, y = 0.0
-  func = (punto: Punto) -> Punto {
-
-    self.x = x
-    self.y = y
-    return self
-  }
+}
+func == (puntoiz: Punto, puntode: Punto) -> Bool {
+  return puntoiz.x==puntode.x && puntoiz.y==puntode.y
+}
+func != (puntoiz: Punto, puntode: Punto) -> Bool {
+  return !(puntoiz==puntode)
 }
 
 
 struct Tamaño {
   var ancho = 0.0, alto = 0.0
 }
-/*func = (tam: Tamaño) -> Tamaño {
-  return Tamaño(ancho: tam.ancho, alto: tam.alto)
-}*/
+func == (izquierdo: Tamaño, derecho: Tamaño) -> Bool {
+  return izquierdo.ancho==derecho.ancho && izquierdo.alto==derecho.alto
+}
+func != (izquierdo: Tamaño, derecho: Tamaño) -> Bool {
+  return !(izquierdo==derecho)
+}
 
 class Rectangulo: Figura {
-  var origen = Punto()   //Esquina inferior izq del rectángulo
-  var tamaño = Tamaño()  //Dimensiones del rectángulo
+  var origen: Punto   //Esquina inferior izq del rectángulo
+  var tamaño: Tamaño  //Dimensiones del rectángulo
   var centro: Punto {
     get {
       let centroX = origen.x + (tamaño.ancho / 2)
@@ -205,7 +209,15 @@ class Rectangulo: Figura {
     self.origen = origen
     self.tamaño = tamaño
   }
-
+  func descripcion() -> String{
+    return "Rectángulo con origen en \(origen), centro en \(centro) de \(tamaño) cuya area es \(area)"
+  }
+}
+func == (izquierdo: Rectangulo, derecho: Rectangulo) -> Bool {
+  return izquierdo.origen==derecho.origen && izquierdo.tamaño==derecho.tamaño && derecho.centro==izquierdo.centro && izquierdo.area==derecho.area
+}
+func != (izquierdo: Rectangulo, derecho: Rectangulo) -> Bool {
+  return !(izquierdo==derecho)
 }
 
 print("\n\nEjercicio 2")
@@ -218,9 +230,9 @@ rectanguloPrueba.centro = Punto(x: 0, y: 0)
 print("   El origen del rectángulo es \(rectanguloPrueba.origen), el tamaño del rectángulo es \(rectanguloPrueba.tamaño), el centro es \(rectanguloPrueba.centro) y el área es \(rectanguloPrueba.area)")
 
 class Circulo: Figura {
-  var centro = Punto()
-  var radio = 0.0
-  var tamaño = Tamaño()
+  var centro: Punto
+  var radio: Double
+  var tamaño: Tamaño
   var area: Double {
     get {
       return π * pow(radio, 2)
@@ -230,11 +242,20 @@ class Circulo: Figura {
       tamaño = Tamaño(ancho: radio * 2, alto: radio)  //suponiendo el ancho el diametro y el alto el radio
     }
   }
-
   init(centro: Punto, radio: Double) {
     self.centro = centro
     self.radio = radio
+    tamaño = Tamaño(ancho: radio * 2, alto: radio)
   }
+  func descripcion() -> String {
+    return "Círculo con centro en \(centro), de radio \(radio), area \(area) y \(tamaño)"
+  }
+}
+func == (izquierdo: Circulo, derecho: Circulo) -> Bool {
+  return izquierdo.centro==derecho.centro && izquierdo.radio==derecho.radio && izquierdo.tamaño==derecho.tamaño && izquierdo.area==derecho.area
+}
+func != (izquierdo: Circulo, derecho: Circulo) -> Bool {
+  return !(izquierdo==derecho)
 }
 
 print("[Pruebas de un circulo]: creamos un circulo en (0,0) con un radio 2")
@@ -244,7 +265,7 @@ circulito.area = 40
 print("   Cambio del área del círculo a 40m: el nuevo radio es \(circulito.radio) con centro en \(circulito.centro)")
 
 class Triangulo: Figura {
-  var p1: Punto, p2: Punto, p3: Punto = Punto()
+  var p1: Punto, p2: Punto, p3: Punto
   var tamaño = Tamaño()
   var centro: Punto {
     get {
@@ -276,6 +297,15 @@ class Triangulo: Figura {
     self.p2 = p2
     self.p3 = p3
   }
+  func descripcion() -> String {
+    return "Triángulo formado por los puntos \(p1), \(p2) y \(p3), con centro en el \(centro), area \(area) y tamaño \(tamaño)"
+  }
+}
+func == (izquierdo: Triangulo, derecho: Triangulo) -> Bool {
+  return izquierdo.p1==derecho.p1 && izquierdo.p2==derecho.p2 && izquierdo.p3==derecho.p3 && izquierdo.tamaño==derecho.tamaño && izquierdo.centro==derecho.centro
+}
+func != (izquierdo: Triangulo, derecho: Triangulo) -> Bool {
+  return !(izquierdo==derecho)
 }
 
 print("[Pruebas de un triangulo]: creamos un triángulo en (0,0), (2,0), (1,3) ")
@@ -285,3 +315,37 @@ triangulo.centro = Punto(x: 2, y: 2)
 print("   Las nuevas posiciones del triángulo son [\(triangulo.p1), \(triangulo.p2), \(triangulo.p3)] y el area = \(triangulo.area)")
 triangulo.centro = Punto(x: 6, y:7)
 print("   Volvemos a cambiar la posición del centro al punto (6,7) y el resultado es [\(triangulo.p1), \(triangulo.p2), \(triangulo.p3)] y el area = \(triangulo.area)")
+
+/////////////////////////////////
+///Ejercicio 3 (continuación)///
+///////////////////////////////
+func cuentaTipos(figuras: [Figura]) -> (Int, Int, Int) {
+  var resultado: (Int, Int, Int) = (0, 0, 0)
+  for (index, item) in figuras.enumerate() {
+    switch item {
+      case is Rectangulo:
+        let rectangulo = item as! Rectangulo  //Se utiliza as! porque al haber comprobado previamente que el tipo del item sería rectángulo se puede asegurar el tipo
+        print(" \(index+1). " + rectangulo.descripcion())
+        resultado.0 += 1
+      case is Circulo:
+        let circulo = item as! Circulo
+        print(" \(index+1). " + circulo.descripcion())
+        resultado.1 += 1
+      case is Triangulo:
+        let triangulo = item as! Triangulo
+        print(" \(index+1). " + triangulo.descripcion())
+        resultado.2 += 1
+      default: print("  Error, figura no definida")
+    }
+  }
+  return resultado
+}
+print("Ejercicio 3")
+print(" Definición de 6 figuras distintas...")
+//Se utilizarán 3 figuras creadas para la realización de las pruebas del ejercicio 2
+let rectangulo2 = Rectangulo(origen: Punto(), tamaño: Tamaño(ancho: 10, alto: 1))
+let circulo2 = Circulo(centro: Punto(), radio: 23)
+let triangulo2 = Triangulo(p1: Punto(), p2: Punto(x: 2, y:0), p3: Punto(x:1, y:3))
+let arrayFiguras: [Figura] = [rectanguloPrueba, circulito, triangulo, rectangulo2, circulo2, triangulo2]
+print(" Contamos los tipos del array con las 6 figuras: ")
+print(" \(cuentaTipos(arrayFiguras))")
