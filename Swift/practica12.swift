@@ -187,8 +187,8 @@ func != (izquierdo: Tamaño, derecho: Tamaño) -> Bool {
 }
 
 class Rectangulo: Figura {
-  var origen: Punto   //Esquina inferior izq del rectángulo
-  var tamaño: Tamaño  //Dimensiones del rectángulo
+  var origen: Punto = Punto()   //Esquina inferior izq del rectángulo
+  var tamaño: Tamaño = Tamaño()  //Dimensiones del rectángulo
   var centro: Punto {
     get {
       let centroX = origen.x + (tamaño.ancho / 2)
@@ -230,8 +230,8 @@ rectanguloPrueba.centro = Punto(x: 0, y: 0)
 print("   El origen del rectángulo es \(rectanguloPrueba.origen), el tamaño del rectángulo es \(rectanguloPrueba.tamaño), el centro es \(rectanguloPrueba.centro) y el área es \(rectanguloPrueba.area)")
 
 class Circulo: Figura {
-  var centro: Punto
-  var radio: Double
+  var centro: Punto = Punto()
+  var radio: Double = 0.0
   var tamaño: Tamaño
   var area: Double {
     get {
@@ -269,7 +269,7 @@ class Triangulo: Figura {
   var tamaño = Tamaño()
   var centro: Punto {
     get {
-      //Ecuación del nuevo punto x=(Ax + Bx + Cx)/3 = resultado/3 x=(Ay + By + Cy)/3 = resultado/3
+      //Ecuación del nuevo punto x=(Ax + Bx + Cx)/3 = resultado x=(Ay + By + Cy)/3 = resultado
       return Punto(x: (p1.x + p2.x + p3.x)/3, y: (p1.y + p2.y + p3.y)/3)
     }
     //Se calculan las distancias entre el centro y el primer punto y se construye el nuevo Triangulo
